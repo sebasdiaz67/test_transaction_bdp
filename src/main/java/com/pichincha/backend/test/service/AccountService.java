@@ -59,12 +59,12 @@ public class AccountService {
 	public Long addTransaction(NewTransactionDto newTransactionDto) {
 		if (null == newTransactionDto.getAccountId()) {
 			log.error("account id cant be null");
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Account ID shouldn't be null");
 		}
 		Account account = accountRepository.findById(newTransactionDto.getAccountId()).orElse(null);
 		if (null == account) {
 			log.error("account cant be null");
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Account not found");
 		}
 		Transaction transaction = new Transaction();
 		transaction.setAccount(account);

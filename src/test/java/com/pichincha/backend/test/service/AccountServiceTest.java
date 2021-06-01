@@ -45,8 +45,8 @@ public class AccountServiceTest {
 		
 
 		assertNotNull("Account shouldn't be null", accountDto);
-		assertThat(accountDto.getType(), equalTo("Test type"));
-		assertThat(accountDto.getNumber(), equalTo("Test number"));
+		assertThat(accountDto.getType(), equalTo("Test Type"));
+		assertThat(accountDto.getNumber(), equalTo("Test Number"));
 		assertThat(accountDto.getCreationDate(), equalTo(creationDate));
 	}
 

@@ -10,7 +10,7 @@ public class UtilClass {
 	public static Account createObjectAccountTest(LocalDateTime creationDate) {
 		Account account = new Account();
 		account.setNumber("Test Number");
-		account.setType("Test type");
+		account.setType("Test Type");
 		account.setCreationDate(creationDate == null ? LocalDateTime.now() : creationDate);
 		return account;
 	}

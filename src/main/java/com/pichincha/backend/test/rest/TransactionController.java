@@ -36,7 +36,12 @@ public class TransactionController {
 	public ResponseEntity<?> addTransaction(@PathVariable Long id, @RequestBody NewTransactionDto newTransactionDto) {
 		log.info("account id => " + id);
 		newTransactionDto.setAccountId(id);
-		return ResponseEntity.status(HttpStatus.CREATED).body(aService.addTransaction(newTransactionDto));
+		try {
+			return ResponseEntity.status(HttpStatus.CREATED).body(aService.addTransaction(newTransactionDto));
+		} catch (Exception e) {
+			log.error("error =>" + e.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		}
 	}
 
 }
