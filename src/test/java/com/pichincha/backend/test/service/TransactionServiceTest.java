@@ -32,6 +32,7 @@ public class TransactionServiceTest {
 	@Test
 	public void shouldReturnAddedTransaction() {
 		Account account = createTestAccount();
+		
 		NewTransactionDto newTransactionDto = UtilClass.createTransaction(account.getId(), "Comment", "Type");
 		
 		Long idTransaction = accountService.addTransaction(newTransactionDto);
@@ -51,6 +52,18 @@ public class TransactionServiceTest {
 	public void shouldReturnErrorExceptionWhenAddedTransactionCantFindAccount() {
 		try {
 			NewTransactionDto newTransactionDto = UtilClass.createTransaction(20L, "Comment", "Type");
+			
+			Long idTransaction = accountService.addTransaction(newTransactionDto);
+			
+		} catch (Exception e) {
+			assertThat(e).isNotNull();
+		}
+	}
+	
+	@Test
+	public void shouldReturnErrorExceptionWhenAddedTransactionWithAccountIdNull() {
+		try {
+			NewTransactionDto newTransactionDto = UtilClass.createTransaction(null, "Comment", "Type");
 			
 			Long idTransaction = accountService.addTransaction(newTransactionDto);
 			
