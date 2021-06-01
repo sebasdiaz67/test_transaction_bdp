@@ -22,6 +22,7 @@ import com.pichincha.backend.test.dto.NewTransactionDto;
 import com.pichincha.backend.test.dto.TransactionDto;
 import com.pichincha.backend.test.model.Account;
 import com.pichincha.backend.test.repository.AccountRepository;
+import com.pichincha.backend.test.service.util.UtilClass;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,11 +37,8 @@ public class AccountServiceTest {
 
 	@Test
 	public void shouldReturnCreatedAccount() {
-		Account account = new Account();
-		account.setNumber("Test number");
-		account.setType("Test type");
 		LocalDateTime creationDate = LocalDateTime.of(2018, 5, 20, 20, 51, 16);
-		account.setCreationDate(creationDate);
+		Account account = UtilClass.createObjectAccountTest(creationDate);
 		accountRepository.save(account);
 
 		AccountDto accountDto = accountService.getAccount(account.getId());
@@ -64,21 +62,15 @@ public class AccountServiceTest {
 	public void shouldAddTransaction() {
 		Account account = createTestAccount();
 
-		NewTransactionDto transaction = new NewTransactionDto();
-		transaction.setAccountId(account.getId());
-		transaction.setType("Type");
-		transaction.setComment("Comment");
-		Long transactionId = accountService.addTransaction(transaction);
+		NewTransactionDto newTransactionDto = UtilClass.createTransaction(account.getId(), "Comment", "Type");
+		Long transactionId = accountService.addTransaction(newTransactionDto);
 
 		assertThat("Transaction id shouldn't be null", transactionId, notNullValue());
 	}
 
 	private Account createTestAccount() {
-		Account account = new Account();
-		account.setNumber("Test Number");
-		account.setType("Test type");
 		LocalDateTime creationDate = LocalDateTime.of(2018, 5, 20, 20, 51, 16);
-		account.setCreationDate(creationDate);
+		Account account = UtilClass.createObjectAccountTest(creationDate);
 		accountRepository.save(account);
 		return account;
 	}
@@ -87,12 +79,9 @@ public class AccountServiceTest {
 	public void shouldReturnAddedTransaction() {
 		Account account = createTestAccount();
 
-		NewTransactionDto transaction = new NewTransactionDto();
-		transaction.setAccountId(account.getId());
-		transaction.setType("Type");
-		transaction.setComment("Comment");
+		NewTransactionDto newTransactionDto = UtilClass.createTransaction(account.getId(), "Comment", "Type");
 
-		accountService.addTransaction(transaction);
+		accountService.addTransaction(newTransactionDto);
 
 		List<TransactionDto> transactions = accountService.getTransactionsForAccount(account.getId());
 

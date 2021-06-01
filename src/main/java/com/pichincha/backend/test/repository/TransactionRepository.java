@@ -11,4 +11,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>{
 
 	@Query("SELECT t FROM Transaction t WHERE t.account.id = ?1 ORDER BY creationDate DESC")
 	List<Transaction> getTransactionsByAccountId(Long accountId);
+	
+	Transaction findByComment(String comment);
 }

@@ -15,7 +15,6 @@ public class AccountControllerTest extends AbstractControllerTest {
 
 	@Test
 	public void shouldReturnFoundAccount() throws Exception {
-		System.out.println("entra");
 		// given
 		LocalDateTime creationDate = LocalDateTime.of(2020, 9, 21, 15, 00, 16);
 		AccountDto account = new AccountDto("001", "saving", creationDate);
@@ -31,5 +30,20 @@ public class AccountControllerTest extends AbstractControllerTest {
 			.andExpect(jsonPath("$.type", is("saving")))
 			.andExpect(jsonPath("$.creationDate", is(creationDate.toString())));
 
+	}
+	
+	@Test
+	public void shouldReturnExistingAccount() throws Exception {
+		LocalDateTime creationDate = LocalDateTime.of(2021, 6, 01, 15, 00, 16);
+		//, \"creationDate\":\" "+creationDate.toString()+"\
+		String accountBody = "{\"number\":\"010\", \"type\":\"test\"}";
+		AccountDto accountDto = new AccountDto("010", "test", creationDate);
+		//String accountBody = mapper.mapToJson(accountDto);
+		
+		when(accountService.getAccount(1L)).thenReturn(accountDto);
+		
+		mockMvc.perform(get("/accounts/1"))
+		.andExpect(status().isOk())
+		.andExpect(content().json(accountBody));
 	}
 }

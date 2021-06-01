@@ -2,6 +2,8 @@ package com.pichincha.backend.test.rest;
 
 import com.pichincha.backend.test.dto.NewTransactionDto;
 import com.pichincha.backend.test.dto.TransactionDto;
+import com.pichincha.backend.test.service.util.UtilClass;
+
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
@@ -43,13 +45,12 @@ public class TransactionControllerTest extends AbstractControllerTest {
 
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test
 	public void shouldAddTransaction() throws Exception {
 
 		// given
 		String transactionBody = "{\"comment\":\"Test comment\", \"type\":\"Credit card payment\"}";
-		NewTransactionDto newTransaction = createTransaction("Test comment", "Credit card payment");
+		NewTransactionDto newTransaction = UtilClass.createTransaction(null, "Test comment", "Credit card payment");
 
 		// when
 		when(accountService.addTransaction(newTransaction)).thenReturn(1L);
@@ -60,13 +61,6 @@ public class TransactionControllerTest extends AbstractControllerTest {
 			.contentType(APPLICATION_JSON_UTF8)
 			.accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isCreated());
-	}
-
-	private NewTransactionDto createTransaction(String comment, String type) {
-		NewTransactionDto newTransaction = new NewTransactionDto();
-		newTransaction.setComment(comment);
-		newTransaction.setType(type);
-		return newTransaction;
 	}
 
 }

@@ -1,6 +1,8 @@
 package com.pichincha.backend.test.rest;
 
 import com.pichincha.backend.test.service.AccountService;
+import com.pichincha.backend.test.service.util.Mapper;
+
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -19,6 +21,8 @@ public abstract class AbstractControllerTest {
 
 	@MockBean
 	protected AccountService accountService;
+	
+	protected Mapper mapper = new Mapper();
 
 	@Before
 	public void setUp() {
