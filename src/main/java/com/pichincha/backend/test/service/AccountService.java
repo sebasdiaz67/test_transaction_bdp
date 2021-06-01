@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.pichincha.backend.test.dto.AccountDto;
@@ -20,6 +22,8 @@ public class AccountService {
 
 	private final AccountRepository accountRepository;
 	private final TransactionRepository transactionRepository;
+	
+	private final Logger log = LoggerFactory.getLogger(AccountService.class);
 
 	public AccountService(AccountRepository accountRepository, TransactionRepository transactionRepository) {
 		this.accountRepository = accountRepository;
@@ -53,18 +57,22 @@ public class AccountService {
 	 * @throws IllegalArgumentException if there is no account for passed newTransactionDto.accountId
 	 */
 	public Long addTransaction(NewTransactionDto newTransactionDto) {
-		Account account = accountRepository.findById(newTransactionDto.getAccountId()).orElse(null);
-		if (null != account) {
-			Transaction transaction = new Transaction();
-			transaction.setAccount(account);
-			transaction.setComment(newTransactionDto.getComment());
-			transaction.setType(newTransactionDto.getType());
-			transaction.setCreationDate(LocalDateTime.now());
-			transactionRepository.save(transaction);
-			return transaction.getId();
-		} else {
-			throw new IllegalArgumentException(newTransactionDto.getAccountId() + "");
+		if (null == newTransactionDto.getAccountId()) {
+			log.error("account id cant be null");
+			throw new IllegalArgumentException();
 		}
+		Account account = accountRepository.findById(newTransactionDto.getAccountId()).orElse(null);
+		if (null == account) {
+			log.error("account cant be null");
+			throw new IllegalArgumentException();
+		}
+		Transaction transaction = new Transaction();
+		transaction.setAccount(account);
+		transaction.setComment(newTransactionDto.getComment());
+		transaction.setType(newTransactionDto.getType());
+		transaction.setCreationDate(LocalDateTime.now());
+		transactionRepository.save(transaction);
+		return transaction.getId();
 	}
 
 }

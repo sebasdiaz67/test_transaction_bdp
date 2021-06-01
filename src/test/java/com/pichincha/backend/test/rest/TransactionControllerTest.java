@@ -43,6 +43,7 @@ public class TransactionControllerTest extends AbstractControllerTest {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test
 	public void shouldAddTransaction() throws Exception {
 

@@ -1,20 +1,5 @@
 package com.pichincha.backend.test.service;
 
-import com.pichincha.backend.test.dto.AccountDto;
-import com.pichincha.backend.test.dto.NewTransactionDto;
-import com.pichincha.backend.test.dto.TransactionDto;
-import com.pichincha.backend.test.model.Account;
-import com.pichincha.backend.test.repository.AccountRepository;
-import org.hamcrest.Matchers;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -22,7 +7,23 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-//@RunWith(SpringRunner.class)
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.hamcrest.Matchers;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.pichincha.backend.test.dto.AccountDto;
+import com.pichincha.backend.test.dto.NewTransactionDto;
+import com.pichincha.backend.test.dto.TransactionDto;
+import com.pichincha.backend.test.model.Account;
+import com.pichincha.backend.test.repository.AccountRepository;
+
+@RunWith(SpringRunner.class)
 @SpringBootTest
 public class AccountServiceTest {
 
@@ -31,6 +32,7 @@ public class AccountServiceTest {
 
 	@Autowired
 	AccountService accountService;
+	
 
 	@Test
 	public void shouldReturnCreatedAccount() {
@@ -42,6 +44,7 @@ public class AccountServiceTest {
 		accountRepository.save(account);
 
 		AccountDto accountDto = accountService.getAccount(account.getId());
+		
 
 		assertNotNull("Account shouldn't be null", accountDto);
 		assertThat(accountDto.getType(), equalTo("Test type"));
@@ -51,8 +54,8 @@ public class AccountServiceTest {
 
 	@Test
 	public void shouldReturnNullForNotExistingAccount() {
-		AccountDto accountDto = accountService.getAccount(123L);
 
+		AccountDto accountDto = accountService.getAccount(0L);
 		assertNull(accountDto);
 	}
 
@@ -97,4 +100,6 @@ public class AccountServiceTest {
 		assertThat(transactions.get(0).getType(), Matchers.equalTo("Type"));
 		assertThat(transactions.get(0).getComment(), Matchers.equalTo("Comment"));
 	}
+	
+	
 }
