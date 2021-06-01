@@ -10,26 +10,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.pichincha.backend.test.dto.NewTransactionDto;
 import com.pichincha.backend.test.service.AccountService;
 
 @RestController
 @RequestMapping("/accounts")
-public class TransactionController {
+public class TransactionController{
 
 	private final AccountService aService;
 	
-	private final Logger log = LoggerFactory.getLogger(TransactionController.class);
+	private final Logger log = LoggerFactory.getLogger(TransactionController.class);	
 
 	public TransactionController(AccountService accountService) {
 		this.aService = accountService;
 	}
 
-	@GetMapping(value = "/{id}/transactions")
-	public ResponseEntity<?> getTransactionsForAccount(@PathVariable Long id) {
-		log.info("account id => " + id);
-		return ResponseEntity.ok(aService.getTransactionsForAccount(id));
+	@GetMapping(value = "/transactions")
+	public ResponseEntity<?> getTransactionsForAccount(@RequestBody NewTransactionDto newTransactionDto) {
+		log.info("account id => " + newTransactionDto.getAccountId());
+		return ResponseEntity.ok(aService.getTransactionsForAccount(newTransactionDto.getAccountId()));
 	}
 	
 	@PostMapping(value = "/{id}/transactions")
@@ -42,6 +43,14 @@ public class TransactionController {
 			log.error("error =>" + e.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
+	}
+	
+	@GetMapping(value = "/transactions/ext")
+	public ResponseEntity<?> getTransactionsExt() {		
+		RestTemplate restTemplate = new RestTemplate();
+		String apiExt  = "https://mocki.io/v1/370615e7-b5bb-4947-baa9-5b0df2349850";
+		ResponseEntity<String> response  = restTemplate.getForEntity(apiExt, String.class);
+		return ResponseEntity.status(HttpStatus.OK).body(response.getBody());
 	}
 
 }

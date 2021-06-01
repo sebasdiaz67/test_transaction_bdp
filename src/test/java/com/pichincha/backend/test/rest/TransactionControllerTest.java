@@ -1,16 +1,5 @@
 package com.pichincha.backend.test.rest;
 
-import com.pichincha.backend.test.dto.NewTransactionDto;
-import com.pichincha.backend.test.dto.TransactionDto;
-import com.pichincha.backend.test.service.util.UtilClass;
-
-import org.junit.Test;
-import org.springframework.http.MediaType;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
@@ -20,8 +9,23 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
+import org.junit.Test;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+
+import com.pichincha.backend.test.dto.NewTransactionDto;
+import com.pichincha.backend.test.dto.TransactionDto;
+import com.pichincha.backend.test.service.util.UtilClass;
+
 public class TransactionControllerTest extends AbstractControllerTest {
 
+	private static final Logger log = Logger.getLogger(TransactionControllerTest.class.getName());
 
 	@Test
 	public void shouldReturnFoundTransactions() throws Exception {
@@ -63,4 +67,11 @@ public class TransactionControllerTest extends AbstractControllerTest {
 			.andExpect(status().isCreated());
 	}
 
+	@Test    
+	public void test_whenList() {
+		RestTemplate rt = new RestTemplate();
+		String apiExt  = "https://mocki.io/v1/370615e7-b5bb-4947-baa9-5b0df2349850";
+		ResponseEntity<String> response = rt.getForEntity(apiExt, String.class);
+		log.info(response.toString());
+	}
 }
