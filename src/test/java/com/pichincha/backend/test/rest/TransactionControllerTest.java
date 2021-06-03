@@ -72,6 +72,6 @@ public class TransactionControllerTest extends AbstractControllerTest {
 		RestTemplate rt = new RestTemplate();
 		String apiExt  = "https://mocki.io/v1/370615e7-b5bb-4947-baa9-5b0df2349850";
 		ResponseEntity<String> response = rt.getForEntity(apiExt, String.class);
-		log.info(response.toString());
+		log.info(response.getBody());
 	}
 }
